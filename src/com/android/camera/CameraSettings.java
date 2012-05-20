@@ -332,9 +332,20 @@ public class CameraSettings {
             sTouchFocusParameter = "mot-areas-to-focus";
             sTouchFocusNeedsRect = true;
             return true;
-        } else {
+        }
+        if (mParameters.get("camera-name") != null &&
+            mParameters.get("s3d-supported") != null) {
+            /* Similar hack to HTC, for OMAP4. These do export the
+             * "touch" focus mode, but they don't have the param
+             * listed until it's used */
+            sTouchFocusParameter = "touch-position";
+            sTouchFocusNeedsRect = false;
+            /* yes, false. If it isn't listed in the focus modes, it
+             * isn't supported */
             return false;
         }
+
+        return false;
     }
 
     public static String getTouchFocusParameterName() {
