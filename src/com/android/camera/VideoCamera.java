@@ -768,6 +768,10 @@ public class VideoCamera extends BaseCamera
             closeCamera();
             throw new RuntimeException("startPreview failed", ex);
         }
+
+        if (CameraSettings.isCamcoderFocusAtStart()) {
+            mCameraDevice.autoFocus(null);
+        }
     }
 
     private void closeCamera() {
@@ -1330,6 +1334,9 @@ public class VideoCamera extends BaseCamera
             return;
         }
 
+        if (CameraSettings.isCamcoderFocusAtStart()) {
+            mCameraDevice.autoFocus(null);
+        }
         CameraSettings.setContinuousAf(mParameters, true);
         setCameraHardwareParameters();
 

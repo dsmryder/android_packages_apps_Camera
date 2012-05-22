@@ -318,15 +318,18 @@ public class Util {
         // documentation.
         Camera.CameraInfo info = new Camera.CameraInfo();
         Camera.getCameraInfo(cameraId, info);
-        int degrees = getDisplayRotation(activity);
+        // We're always working in a landscape layout. We can ignore getDisplayRotation
+        // figure which can provide incorrect rotation or provide rotation figure too
+        // soon, such as when opening from the lockscreen which is portrait.
+        // As intended layout is landscape, we aim for 90 degrees from which to calculate
+        // orientation.
+        int degrees = 90;
         int result;
         if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT &&
                 info.orientation != 90) {
-            Log.e(TAG, "Front Facing select with mirror = " + info.orientation + " " + degrees);
             result = (info.orientation + degrees) % 360;
             result = (360 - result) % 360;  // compensate the mirror
         } else {  // back-facing (or acting like it)
-            Log.e(TAG, "BACK Facing select = " + info.orientation + " " + degrees);
             result = (info.orientation - degrees + 360) % 360;
         }
 
